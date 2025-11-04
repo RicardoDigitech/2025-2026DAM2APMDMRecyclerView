@@ -55,6 +55,14 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoVH> {
                     android.R.drawable.checkbox_off_background
             );
         }
+
+        holder.btnCompletado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                td.setCompletado(!td.isCompletado());
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
