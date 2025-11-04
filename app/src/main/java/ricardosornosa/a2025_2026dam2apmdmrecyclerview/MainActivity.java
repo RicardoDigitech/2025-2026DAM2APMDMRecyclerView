@@ -3,17 +3,22 @@ package ricardosornosa.a2025_2026dam2apmdmrecyclerview;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
 import java.util.ArrayList;
 
+import ricardosornosa.a2025_2026dam2apmdmrecyclerview.adapters.ToDoAdapter;
 import ricardosornosa.a2025_2026dam2apmdmrecyclerview.databinding.ActivityMainBinding;
 import ricardosornosa.a2025_2026dam2apmdmrecyclerview.models.ToDoModel;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ArrayList<ToDoModel> toDoList;
+    private ToDoAdapter adapter;
+    private RecyclerView.LayoutManager lm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,16 @@ public class MainActivity extends AppCompatActivity {
 
         toDoList = new ArrayList<>();
         crearTareas();
+
+        adapter = new ToDoAdapter(
+                toDoList,
+                R.layout.to_do_view_model,
+                MainActivity.this
+        );
+        lm = new LinearLayoutManager(MainActivity.this);
+
+        binding.contentMain.contenedorMain.setAdapter(adapter);
+        binding.contentMain.contenedorMain.setLayoutManager(lm);
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     "Título " + i,
                     "Contenido " + i
             );
+            toDoList.add(td);
         }
     }
 }
