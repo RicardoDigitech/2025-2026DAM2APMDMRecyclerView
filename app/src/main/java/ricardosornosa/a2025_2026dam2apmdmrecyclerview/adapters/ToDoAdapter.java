@@ -1,6 +1,7 @@
 package ricardosornosa.a2025_2026dam2apmdmrecyclerview.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -63,6 +65,31 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoVH> {
                 notifyDataSetChanged();
             }
         });
+
+        holder.btnBorrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmarBorrado("¿SEGURO?",
+                        holder.getBindingAdapterPosition()).show();
+            }
+        });
+    }
+
+    private AlertDialog confirmarBorrado(String titulo, int posicion) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(titulo);
+        builder.setCancelable(true);
+
+        builder.setNegativeButton("NO", null);
+        builder.setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                objects.remove(posicion);
+                notifyItemRemoved(posicion);
+            }
+        });
+
+        return builder.create();
     }
 
     @Override
@@ -72,7 +99,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoVH> {
 
     public class ToDoVH extends RecyclerView.ViewHolder {
         TextView lblTitulo, lblContenido, lblFecha;
-        ImageButton btnCompletado;
+        ImageButton btnCompletado, btnBorrar;
 
         public ToDoVH(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +107,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoVH> {
             lblContenido = itemView.findViewById(R.id.lblContenidoToDoViewModel);
             lblFecha = itemView.findViewById(R.id.lblFechaToDoViewModel);
             btnCompletado = itemView.findViewById(R.id.btnCompletadoToDoViewModel);
+            btnBorrar = itemView.findViewById(R.id.btnBorrarToDoViewModel);
         }
     }
 }
